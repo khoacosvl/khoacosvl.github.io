@@ -172,7 +172,7 @@
         $(document).ready(function () {
             const tableBody = document.querySelector('#myTable tbody');
             var table;
-            fetch('https://tech.thuongtamduy.com/api/normal/warranties')
+            fetch('https://api.thuongtamduy.com/api/normal/warranties')
             .then(response => response.json())
             .then(res => {
                 res['data'].forEach(item => {
@@ -261,7 +261,7 @@
 
             $('.confirmbtn').click(function() {
                 var id = $(this).attr('data-id');
-                fetch(`https://tech.thuongtamduy.com/api/normal/warranties/${id}`, {
+                fetch(`https://api.thuongtamduy.com/api/normal/warranties/${id}`, {
                     method: 'DELETE',
                 })
                 .then(res => {
@@ -312,7 +312,7 @@
                 //     };
                 //     console.log(data)
 
-                //     // fetch(`https://tech.thuongtamduy.com/api/normal/warranties`, {
+                //     // fetch(`https://api.thuongtamduy.com/api/normal/warranties`, {
                 //     //     method: 'POST',
                 //     // })
                 //     // .then(res => {
@@ -324,7 +324,7 @@
                 //     // });
                 // };
 
-                fetch(`https://tech.thuongtamduy.com/api/normal/warranties`, {
+                fetch(`https://api.thuongtamduy.com/api/normal/warranties`, {
                     method: 'POST',
                 })
                 .then(res => {
