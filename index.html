@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin bảo hành</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-    <!-- CSS Local -->
-    <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
@@ -137,7 +135,7 @@
         <form class="modal-content" action="/action_page.php">
             <div class="container">
                 <h1>Xác nhận</h1>
-                <p>Bạn có chắc muốn xóa tài khoản</p>
+                <p>Bạn có chắc muốn xóa thông tin</p>
 
                 <div class="clearfix">
                     <button type="button" class="cancelbtn" onclick="document.getElementById('id03').style.display='none'">Không</button>
@@ -252,7 +250,7 @@
                     image.setAttribute('src', data[8]);
 
                     var id = data[0];
-                    $('.deletebtn').attr('data-id', id);
+                    $('.confirmbtn').attr('data-id', id);
 
                     document.getElementById('id01').style.display = 'block';
                 });
@@ -267,8 +265,10 @@
                         method: 'DELETE',
                     })
                     .then(res => {
-                        alert(res['message'] ? res['message'] : 'Xóa thành công');
-                        location.reload();
+                        if(res.ok){
+                            alert(res['message'] ? res['message'] : 'Xóa thành công');
+                            location.reload();
+                        }
                     })
                     .catch(error => {
                         
@@ -286,58 +286,31 @@
                     const description = form.elements["description"].value;
                     const imageFile = form.elements["file"].files[0];
 
-                    const data = {
-                        name: name,
-                        phone: phone,
-                        model: model,
-                        price: price,
-                        imei: imei,
-                        date: date,
-                        description: description,
-                        image: imageFile,
-                    };
-                    console.log(data)
-
-                    // const reader = new FileReader();
-                    // reader.readAsBinaryString(imageFile);
-                    // reader.onload = function() {
-                    //     const imageData = btoa(reader.result);
-
-                    //     const data = {
-                    //         name: name,
-                    //         phone: phone,
-                    //         model: model,
-                    //         imei: imei,
-                    //         date: date,
-                    //         description: description,
-                    //         image: imageData,
-                    //     };
-                    //     console.log(data)
-
-                    //     // fetch(`https://api.thuongtamduy.com/api/normal/warranties`, {
-                    //     //     method: 'POST',
-                    //     // })
-                    //     // .then(res => {
-                    //     //     alert(res['message'] ? res['message'] : 'Tạo thành công');
-                    //     //     location.reload();
-                    //     // })
-                    //     // .catch(error => {
-                            
-                    //     // });
-                    // };
-
+                    let data = new FormData();
+                    data.append('name', name);
+                    data.append('phone', phone);
+                    data.append('model', model);
+                    data.append('price', price);
+                    data.append('imei', imei);
+                    data.append('date', date);
+                    data.append('description', description);
+                    if(imageFile) {
+                        data.append('thumbnail', imageFile, imageFile.name);
+                    }
+                    
                     fetch(`https://api.thuongtamduy.com/api/normal/warranties`, {
                         method: 'POST',
-                        body: JSON.stringify({data}),
+                        body: data,
                     })
                     .then(res => {
-                        alert(res['message'] ? res['message'] : 'Tạo thành công');
-                        location.reload();
+                        if(res.ok){
+                            alert(res['message'] ? res['message'] : 'Tạo thành công');
+                            location.reload();
+                        }
                     })
                     .catch(error => {
                         
                     });
-
                 });
 
                 $('#addButton').click(function() {
